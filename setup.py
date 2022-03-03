@@ -14,7 +14,6 @@ setup(
     author="AnimusXCASH",
     author_email="lovro@xcash.foundation",
     license="MIT",
-    package_dir={'': 'xcsah/'},
     classifiers=[
         "License :: OSI Approved :: MIT License",
         "Programming Language :: Python :: 3",
