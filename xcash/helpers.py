@@ -25,8 +25,10 @@ class Helpers():
             raise Exception(err)
 
     def get_response(self, url):
-        print(url)
         response = requests.get(url=url, headers={'Accept': 'application/json',
                                                   "Content-Type": "application/json"})
 
         return response
+
+    def post_response(self, rpc_url, rpc_input, headers):
+        return requests.post(rpc_url, data=json.dumps(rpc_input), headers=headers)
