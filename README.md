@@ -17,7 +17,9 @@ Is a client Python wrapper library around XCASH Foundation ecosystem products.
 - [X] Blockchain Explorer api wrapper
 - [X] Delegates Explorer api wrapper
 - [X] Shared Delegate api wrapper
-- [ ] RPC wallet
+- [ ] RPC 
+  - [X] Daemon
+  - [ ] Wallet
 - [X] [PyPi published](https://pypi.org/project/xcash/)
 
 ## Setup
