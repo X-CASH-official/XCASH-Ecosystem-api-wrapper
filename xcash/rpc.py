@@ -78,7 +78,7 @@ class XcashDaemonRpc(Helpers):
         data = self.__xcash_daemon_post(method="get_block_template", params=params)
         return data
 
-    def submin_block(self, block_blob_data: list) -> dict:
+    def submit_block(self, block_blob_data: list) -> dict:
         """Submit a mined block to network
 
         Args:
@@ -213,12 +213,12 @@ class XcashDaemonRpc(Helpers):
 
         return self.__xcash_daemon_post(method="flush_txpool")
 
-    def get_output_histogram(self, amounts: int) -> dict:
+    def get_output_histogram(self, amounts: list) -> dict:
         """Get a histogram of output amounts. For all amounts (possibly filtered by parameters), 
         gives the number  of outputs on the chain for that amount. RingCT outputs counts as 0 amount.
 
         Args:
-            amounts (int): list of unsigned ints
+            amounts (list): list of unsigned ints
 
         Returns:
             dict: histogram of entries
@@ -266,7 +266,7 @@ class XcashDaemonRpc(Helpers):
         return self.__xcash_daemon_post(method="get_alternate_chains")
 
     def relay_tx(self, tx_ids: list) -> dict:
-        """get_alternate_chainsRelay a list of transaction IDs.
+        """Relay a list of transaction IDs.
 
         Args:
             tx_ids (list): List of transaction IDs to relay
