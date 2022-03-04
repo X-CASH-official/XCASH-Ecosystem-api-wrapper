@@ -23,6 +23,8 @@ class Helpers():
                 response.raise_for_status()
         except requests.exceptions.HTTPError as err:
             raise Exception(err)
+        except requests.exceptions.ConnectionError as err:
+            raise Exception(err)
 
     def get_response(self, url):
         response = requests.get(url=url, headers={'Accept': 'application/json',
