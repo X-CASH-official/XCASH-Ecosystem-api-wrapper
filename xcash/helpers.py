@@ -119,7 +119,15 @@ class Helpers():
         except requests.exceptions.ConnectionError as err:
             raise Exception(err)
 
-    def get_response(self, url):
+    def get_response(self, url: str):
+        """Get response from GET request
+
+        Args:
+            url (str): string url 
+
+        Returns:
+            dict: Response from api call
+        """
         response = requests.get(url=url, headers={'Accept': 'application/json',
                                                   "Content-Type": "application/json"})
 
