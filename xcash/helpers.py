@@ -135,3 +135,68 @@ class Helpers():
 
     def post_response(self, rpc_url, rpc_input, headers):
         return requests.post(rpc_url, data=json.dumps(rpc_input), headers=headers)
+
+    def get_payment_id(self) -> str:
+        """Create payment ID for wallet
+
+        Returns:
+            str: random payment id
+        """
+
+        random_32_bytes = os.urandom(32)
+        payment_id = "".join(map(chr, binascii.hexlify(random_32_bytes)))
+        return payment_id
+
+    def check_function_params(self, allowed_keys, kwargs):
+        for k, v in kwargs.items():
+            if k not in allowed_keys:
+                raise InvalidArgument(f"Argument {k}  with value {v} is not supported in this API call")
+
+    def check_params(self, allowed_keys, params):
+        """Check the allowed elements
+
+        Args:
+            list_to_check (_type_): _description_
+            allowed_keys (_type_): _description_
+
+        Raises:
+            MissingRequiredParameter: _description_
+        """
+        print(params)
+        for k in params.keys():
+            if k not in allowed_keys:
+                allowed = ', '.join(allowed_keys)
+                raise ParamNotSupported(f'Parameter {k} not allowed. Available are: {allowed}')
+
+    def process_destinations(self, destinations: list) -> list:
+        """Helper function to process the transfer structure
+
+        Args:
+            destinations (list): List of destinations where funds will be sent
+
+        Raises:
+            AmountTypeError: If amount is in forms of string
+            Exception: _description_
+            MissingRequiredParama: If required params for destination are missing
+
+        Returns:
+            list: List of ready to send destinations formatted for RPC.
+        """
+        allowed = ("address", "amount")
+
+        new_transfers = list()
+        for d in destinations:
+            formated_destination = dict(((k.lower(), v) for k, v in d.items()))
+            if all(key in formated_destination for key in allowed):
+                if not isinstance(formated_destination.get("amount"), (int, float)):
+                    raise AmountTypeError("Amount needs to be either integer or float.")
+                else:
+                    formated_destination["amount"] = self.get_atomic(formated_destination.get("amount"))
+                if not isinstance(formated_destination.get("address"), str):
+                    raise AddressTypeError("Destination address is required to be string.")
+
+                new_transfers.append(formated_destination)
+            else:
+                required = ' & '.join(allowed)
+                raise MissingRequiredParama(f"One of the required params is missing. Required are {required}")
+        return new_transfers
