@@ -1,7 +1,57 @@
-import imp
+import binascii
+
 import json
 
 import requests
+
+
+class XcashException(Exception):
+    """Xcash Exceptions
+    """
+    pass
+
+
+class InvalidArgument(XcashException):
+    def __init__(self, message):
+        self.message = message
+        super().__init__(self.message)
+
+    pass
+
+
+class MissingRequiredParameter(XcashException):
+    def __init__(self, message):
+        self.message = message
+        super().__init__(self.message)
+        pass
+
+
+class ParamNotSupported(XcashException):
+    def __init__(self, message):
+        self.message = message
+        super().__init__(self.message)
+        pass
+
+
+class AmountTypeError(XcashException):
+    def __init__(self, message):
+        self.message = message
+        super().__init__(self.message)
+        pass
+
+
+class AddressTypeError(XcashException):
+    def __init__(self, message):
+        self.message = message
+        super().__init__(self.message)
+        pass
+
+
+class MissingRequiredParama(XcashException):
+    def __init__(self, message):
+        self.message = message
+        super().__init__(self.message)
+        pass
 
 
 class Helpers():
