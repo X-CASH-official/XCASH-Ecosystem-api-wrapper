@@ -17,13 +17,15 @@ Is a client Python wrapper library around XCASH Foundation ecosystem products.
 - [X] Blockchain Explorer api wrapper
 - [X] Delegates Explorer api wrapper
 - [X] Shared Delegate api wrapper
-- [X] RPC 
-  - [X] Daemon
-  - [X] Wallet
-  - [X] Dpops
+- [X] RPC
+    - [X] Daemon
+    - [X] Wallet
+    - [X] Dpops
 - [X] [PyPi published](https://pypi.org/project/xcash/)
 
 ## Setup
+
+### Install required package
 
 Package can be installed with [pip](https://pypi.org/project/pip/), the python package index.
 
@@ -36,6 +38,8 @@ or
 ```shell
 pip install xcash
 ```
+
+### Ecosystem accessible products
 
 To access products you are required to import packages and initiate them:
 
@@ -54,6 +58,25 @@ delegates_api = DelegatesExplorer()
 from xcash.sharedDelegate import SharedDelegate
 
 delegate_api = SharedDelegate(delegate_url="DELEGATE URL")
+```
+
+### RPC Daemon, Wallet and Dpops wallet (delegate)
+
+```python
+# Access endpoints for XCASH Daemon
+from xcash.rpc import XcashDaemonRpc
+
+daemon = XcashDaemonRpc()
+
+# Access endpoints for XCASH wallet
+from xcash.rpc import XcashWalletRpc
+
+wallet = XcashWalletRpc()
+
+# Access endpoints on wallet dedicated for delegate.
+from xcash.rpc import XcashDpopsWalletRpc
+
+dpops = XcashDpopsWalletRpc()
 ```
 
 ## Examples
@@ -116,6 +139,43 @@ pprint(statistics)
 
 Examples on all available methods to communicate with Shared Delegate Rest API can be
 found [here](https://github.com/X-CASH-official/XCASH-Ecosystem-api-wrapper/blob/main/examples/shared_delegate_examples.py)
+
+### Daemon RPC call
+
+```python
+from xcash.rpc import XcashDaemonRpc
+from pprint import pprint
+
+daemon = XcashDaemonRpc()
+
+# Get the daemon version
+version = daemon.get_version()
+pprint(version)
+```
+
+### Wallet RPC call
+
+````python
+from xcash.rpc import XcashWalletRpc
+from pprint import pprint
+
+wallet = XcashWalletRpc()
+
+# Get balance 
+balance = wallet.get_balance()
+pprint(balance)
+````
+
+### DPOPS Wallet RPC call
+
+```python
+from xcash.rpc import XcashDpopsWalletRpc
+from pprint import pprint
+
+dpops_wallet = XcashDpopsWalletRpc()
+status = dpops_wallet.register_delegate(delegate_name="Animus-Test", delegate_ip_address="100.100.00.00")
+pprint(status)
+```
 
 
 
