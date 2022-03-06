@@ -321,6 +321,7 @@ class XcashWalletRpc(Helpers):
                                    "method": method})
 
         response = requests.post(self.rpc_url, data=rpc_data, headers=self.headers)
+
         return self.process_response(response=response)
 
     def get_balance(self, account_index: int = 0, sub_address_indicies: list = None) -> dict:
@@ -341,7 +342,7 @@ class XcashWalletRpc(Helpers):
             params.update({"address_indices": sub_address_indicies})
         return self.__xcash_wallet_post(method="get_balance", params=params)
 
-    def get_address(self, account_index: int, address_index: list = None) -> dict:
+    def get_address(self, account_index: int = 0, address_index: list = None) -> dict:
         """Return the wallet's addresses for an account. Optionally filter for specific set of subaddresses.‌
 
         Args:
@@ -358,7 +359,7 @@ class XcashWalletRpc(Helpers):
         return self.__xcash_wallet_post(method="get_address", params=params)
 
     def get_address_index(self, address: str) -> dict:
-        """Get account and address indexes from a specific (sub)address‌
+        """Get account and address indexes from a specific (sub)address
 
         Args:
             address (str): Valid Xcash address
@@ -366,11 +367,11 @@ class XcashWalletRpc(Helpers):
         Returns:
             dict: index
         """
-        params = {"address": "address"}
+        params = {"address": address}
         return self.__xcash_wallet_post(method="get_address_index", params=params)
 
-    def create_address(self, account_index: int, label: str = None) -> dict:
-        """Create a new address for an account. Optionally, label the new address.‌
+    def create_address(self, account_index: int = 0, label: str = None) -> dict:
+        """Create a new address for an account. Optionally, label the new address.
 
         Args:
             account_index (int): Create a new address for this account.
@@ -401,7 +402,7 @@ class XcashWalletRpc(Helpers):
         return self.__xcash_wallet_post(method="label_address", params=params)
 
     def get_accounts(self, tag: str = None) -> dict:
-        """Get all accounts for a wallet. Optionally filter accounts by tag.‌
+        """Get all accounts for a wallet. Optionally filter accounts by tag.
 
         Args:
             tag (str, optional): Tag for filtering accounts.. Defaults to None.
@@ -442,7 +443,7 @@ class XcashWalletRpc(Helpers):
         params = ({"account_index": account_index, "label": label})
         return self.__xcash_wallet_post(method="label_account", params=params)
 
-    def get_account_tags(self) -> list:
+    def get_account_tags(self) -> dict:
         """Get a list of user defined account tags
 
         Returns:
@@ -460,24 +461,30 @@ class XcashWalletRpc(Helpers):
         Returns:
             dict: None
         """
-        params = {"tag": tag, "accounts": accounts}
-        return self.__xcash_wallet_post(method="tag_accounts", params=params)
+        if not any(not isinstance(y, (int)) for y in accounts):
+            params = {"tag": tag, "accounts": accounts}
+            return self.__xcash_wallet_post(method="tag_accounts", params=params)
+        else:
+            raise TypeError("Values in accounts list are allowed to be integers only.")
 
     def untag_accounts(self, accounts: list) -> dict:
         """Remove filtering tag from a list of accounts.‌
 
         Args:
 
-            accounts (list): Remove tag from this list of accounts, array of insigned integers.
+            accounts (list): Remove tag from this list of accounts, array of unsigned integers.
 
         Returns:
             dict: None
         """
-        params = {"accounts": accounts}
-        return self.__xcash_wallet_post(method="untag_accounts", params=params)
+        if not any(not isinstance(y, (int)) for y in accounts):
+            params = {"accounts": accounts}
+            return self.__xcash_wallet_post(method="untag_accounts", params=params)
+        else:
+            raise TypeError("Values in accounts list are allowed to be integers only.")
 
     def set_account_tag_description(self, tag: str, description: str) -> dict:
-        """Set descritpion for an account tah
+        """Set description for an account tah
 
         Args:
             tag (str): Set a description for this tag
@@ -489,11 +496,11 @@ class XcashWalletRpc(Helpers):
         params = {"tag": tag, "description": description}
         return self.__xcash_wallet_post(method="set_account_tag_description", params=params)
 
-    def get_wallet_height(self) -> int:
+    def get_wallet_height(self) -> dict:
         """Get the wallets current block height
 
         Returns:
-            int: the current xcash-wallet-rpc's blockchain height. If the wallet has 
+            dict: height, the current xcash-wallet-rpc's blockchain height. If the wallet has
                 been offline for a long time, it may need to catch up with the daemon.
         """
         return self.__xcash_wallet_post(method="get_height")
@@ -510,7 +517,7 @@ class XcashWalletRpc(Helpers):
             dict: amount, fee, multisig_txset, tx_blobl, tx_hash, tx_key, tx_metadata, unsigned_txset
         """
 
-        allowed_keys = ["account_index", "subaddr_indices", "get_tx_key", "ring_size", "payment_id", "do_not_relay",
+        allowed_keys = ["account_index", "subaddr_indices", "ring_size", "payment_id", "do_not_relay",
                         "get_tx_metadata"]
 
         params = {"mixin": mixin,
@@ -528,7 +535,7 @@ class XcashWalletRpc(Helpers):
             destinations=destinations)  # Check the destination structures to be correct and format amount
         params["destinations"] = recipients
 
-        return self.post_to_monero_wallet_rpc("transfer", params)
+        return self.__xcash_wallet_post(method="transfer", params=params)
 
     def transfer_split(self, destinations: list, priority: int = 0, mixin: int = 20, **kwargs) -> dict:
         """Same as transfer, but can split into more than one tx if necessary.‌
@@ -576,7 +583,7 @@ class XcashWalletRpc(Helpers):
             params.update({"export_raw ": export_raw})
         return self.__xcash_wallet_post(method="sign_transfer", params=params)
 
-    def submint_transfer(self, tx_data_hex: str) -> dict:
+    def submit_transfer(self, tx_data_hex: str) -> dict:
         """Submit a previously signed transaction on a read-only wallet (in cold-signing process).‌
 
         Args:
@@ -702,6 +709,7 @@ class XcashWalletRpc(Helpers):
 
     def incoming_transfers(self, transfer_type: str, account_index: int = 0, subaddrr_indices: list = None,
                            verbose: bool = True) -> dict:
+
         """Return a list of incoming transfers to the wallet
 
         Args:
@@ -798,7 +806,7 @@ class XcashWalletRpc(Helpers):
         return self.__xcash_wallet_post(method="get_tx_notes", params=params)
 
     def set_attribute(self, key: str, value: str) -> dict:
-        """Set arbitrary attribute.‌
+        """Set arbitrary attribute.
 
         Args:
             key (str): attribute name
@@ -812,7 +820,7 @@ class XcashWalletRpc(Helpers):
         return self.__xcash_wallet_post(method="set_attribute", params=params)
 
     def get_attribute(self, key: str) -> dict:
-        """Set arbitrary attribute.‌
+        """Set arbitrary attribute.
 
         Args:
             key (str): attribute name
@@ -1320,7 +1328,7 @@ class XcashWalletRpc(Helpers):
         return self.__xcash_wallet_post(method="get_version")
 
 
-class DpopsWalletRpc(XcashWalletRpc):
+class XcashDpopsWalletRpc(Helpers):
     def __init__(self, rpc_url: str = None):
         super().__init__()
         self.headers = {'Content-Type': 'application/json'}
