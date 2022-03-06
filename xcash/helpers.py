@@ -157,12 +157,12 @@ class Helpers():
 
         Args:
             list_to_check (_type_): _description_
-            allowed_keys (_type_): _description_
+            params (dict): Params through kwargs
 
         Raises:
-            MissingRequiredParameter: _description_
+            MissingRequiredParameter: When required param is missing
         """
-        print(params)
+
         for k in params.keys():
             if k not in allowed_keys:
                 allowed = ', '.join(allowed_keys)
