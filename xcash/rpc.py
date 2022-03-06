@@ -1320,3 +1320,87 @@ class XcashWalletRpc(Helpers):
         return self.__xcash_wallet_post(method="get_version")
 
 
+class DpopsWalletRpc(XcashWalletRpc):
+    def __init__(self, rpc_url: str = None):
+        super().__init__()
+        self.headers = {'Content-Type': 'application/json'}
+
+        if rpc_url:
+            self.rpc_url = rpc_url
+
+        else:
+            self.rpc_url = "http://localhost:18285/json_rpc"
+
+    def vote(self, delegate: str) -> dict:
+        """Place your vote for a delegate
+
+        Args:
+            delegate (str): Name or public address of the delegate to receive the vote.
+
+        Returns:
+            dict: tatus of the vote call.
+        """
+        params = {"delegate_data": delegate}
+        data = self.__xcash_daemon_post(method="vote", params=params)
+        return data
+
+    def register_delegate(self, delegate_name: str, delegate_ip_address: str) -> dict:
+        """Registr a delegate
+
+        Args:
+            delegate_name (str): name of the delegate
+            delegate_ip_address (str): delegates IP address
+
+        Returns:
+            dict: response
+        """
+        params = {"delegate_name": delegate_name,
+                  "delegate_IP_address": delegate_ip_address}
+        data = self.__xcash_daemon_post(method="delegate_register", params=params)
+        return data
+
+    def delegate_update(self, **kwargs) -> dict:
+        """_summary_
+        Kwargs:
+            IP_address (str, optional): IP address of the delegate. 
+            about (str, optional): Description of the delegate.
+            website (str, optional): website address of the delegate.
+            team (str, optional): team 
+            pool_mode (str, optional); mode of the pool
+            fee_structure (str, optional): fee structure 
+            server_settings (str, otpional): server settings
+
+        Returns:
+            dict: delegate_update_status 
+        """
+        allowed = ["IP_address ", "about", "website", "team", "pool_mode", "fee_structure", "server_settings"]
+
+        self.check_params(allowed_keys=allowed, params=kwargs)
+
+        if len(kwargs) > 0:
+            if kwargs:
+                data = self.__xcash_daemon_post(method="delegate_update", params=kwargs)
+                return data
+        else:
+            print("You need to provide at least one key, value pair for update to process")
+
+    def delegate_remove(self) -> dict:
+        """Remove the delegate from the delegate list.
+
+        Returns:
+            dict: delegate_remove_status 
+        """
+        data = self.__xcash_daemon_post(method="delegate_remove")
+        return data
+
+    def recover_delegate(self, domain_name: str) -> dict:
+        """Get delegate information to be used for recovery
+
+        Args:
+            domain_name (str): delegates domain name
+
+        Returns:
+            dict: delegate details
+        """
+        params = {"domain_name": domain_name}
+        return self.__xcash_daemon_post(method="recover", params=params)
