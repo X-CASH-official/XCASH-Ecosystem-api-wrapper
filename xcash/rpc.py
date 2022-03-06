@@ -20,7 +20,7 @@ class XcashDaemonRpc(Helpers):
         else:
             self.rpc_url = "http://localhost:18281/json_rpc"
 
-    def __xcash_daemon_post(self, method: str, params = None) -> dict:
+    def __xcash_daemon_post(self, method: str, params=None) -> dict:
         """Post to XCASH Daemon RPC
 
         Args:
@@ -323,8 +323,8 @@ class XcashWalletRpc(Helpers):
         response = requests.post(self.rpc_url, data=rpc_data, headers=self.headers)
         return self.process_response(response=response)
 
-    def get_balance(self, account_index: int = 0, sub_address_indicies: list=None) -> dict:
-        """Return the wallet's balance.‌
+    def get_balance(self, account_index: int = 0, sub_address_indicies: list = None) -> dict:
+        """Return the wallet's balance.
 
         Args:
             account_index (int, optional): Return balance for this account.. Defaults to 0.
@@ -366,7 +366,7 @@ class XcashWalletRpc(Helpers):
         Returns:
             dict: index
         """
-        params = {"address":"address"}
+        params = {"address": "address"}
         return self.__xcash_wallet_post(method="get_address_index", params=params)
 
     def create_address(self, account_index: int, label: str = None) -> dict:
@@ -558,9 +558,9 @@ class XcashWalletRpc(Helpers):
         recipients = self.process_destinations(
             destinations=destinations)  # Check the destination structures to be correct and format amount
         params["destinations"] = recipients
-        return self.__xcash_wallet_post(method="transfer_split", params = params)
+        return self.__xcash_wallet_post(method="transfer_split", params=params)
 
-    def sign_transfer(self, unsigned_txset:str, export_raw:bool= False) -> dict:
+    def sign_transfer(self, unsigned_txset: str, export_raw: bool = False) -> dict:
         """Sign a transaction created on a read-only wallet (in cold-signing process)‌
 
         Args:
@@ -576,8 +576,7 @@ class XcashWalletRpc(Helpers):
             params.update({"export_raw ": export_raw})
         return self.__xcash_wallet_post(method="sign_transfer", params=params)
 
-
-    def submint_transfer(self, tx_data_hex:str) -> dict:
+    def submint_transfer(self, tx_data_hex: str) -> dict:
         """Submit a previously signed transaction on a read-only wallet (in cold-signing process).‌
 
         Args:
@@ -602,11 +601,11 @@ class XcashWalletRpc(Helpers):
         Returns:
             dict: tx_hash_list, tx_key_list, amount_list, fee_list, tx_blob_list, tx_metadata_list, multisig_txset, unsigned_txset
         """
-        allowed = ["get_tx_keys","do_not_relay", "get_tx_hex","get_tx_metadata"]
+        allowed = ["get_tx_keys", "do_not_relay", "get_tx_hex", "get_tx_metadata"]
         self.check_params(allowed_keys=allowed, params=kwargs)
         return self.__xcash_wallet_post(method="submint_transfer", params=kwargs)
 
-    def sweep_all(self, address:str, account_index:int = 0, mixin:int = 20, **kwargs) -> dict:
+    def sweep_all(self, address: str, account_index: int = 0, mixin: int = 20, **kwargs) -> dict:
         """Send all unlocked balance to an address.‌
 
         Args:
@@ -617,17 +616,18 @@ class XcashWalletRpc(Helpers):
         Returns:
             dict: tx_hash_list, tx_key_list, amount_list, fee_list, tx_blobl_list, tx_metadata_list, multisig_txset, unsigned_txset
         """
-        
-        allowed = ["subaddr_indices", "priority", "payment_id","ring_size", "get_tx_keys","below_amount","do_not_relay","get_tx_hex","get_tx_metadata"]       
+
+        allowed = ["subaddr_indices", "priority", "payment_id", "ring_size", "get_tx_keys", "below_amount",
+                   "do_not_relay", "get_tx_hex", "get_tx_metadata"]
         self.check_params(allowed_keys=allowed, params=kwargs)
 
-        params = {"address":address,"account_index":account_index,"mixin":mixin}
+        params = {"address": address, "account_index": account_index, "mixin": mixin}
         if kwargs:
             params.update(kwargs)
         return self.__xcash_wallet_post(method="sweep_all", params=kwargs)
 
-    def sweep_single(self, destinations:list, account_index:int = 0,mixin:int = 20, **kwargs) -> dict:
-        """Send all of a specific unlocked output to an address.‌
+    def sweep_single(self, destinations: list, account_index: int = 0, mixin: int = 20, **kwargs) -> dict:
+        """Send all of a specific unlocked output to an address.
 
         Args:
             destinations (list): Destination public address.
@@ -638,17 +638,18 @@ class XcashWalletRpc(Helpers):
             dict: tx_hash_list, tx_key_list, amount_list, fee_ist, tx_blobl_list, tx_metadata_list, multisig_txset, unsigned_txset
         """
 
-        allowed = ["subaddr_indices", "priority", "payment_id","ring_size", "get_tx_keys","below_amount","do_not_relay","get_tx_hex","get_tx_metadata"]       
+        allowed = ["subaddr_indices", "priority", "payment_id", "ring_size", "get_tx_keys", "below_amount",
+                   "do_not_relay", "get_tx_hex", "get_tx_metadata"]
         self.check_params(allowed_keys=allowed, params=kwargs)
-        destinations =  self.process_destinations(destinations=destinations)
+        destinations = self.process_destinations(destinations=destinations)
 
-        params = {"destinations":destinations,"mixin":mixin,"account_index":account_index}
+        params = {"destinations": destinations, "mixin": mixin, "account_index": account_index}
         if kwargs:
             params.update(kwargs)
         return self.__xcash_wallet_post(method="sweep_single", params=kwargs)
 
     def relay_tx(self, hex: str) -> dict:
-        """Relay a transaction previously created with "do_not_relay":true.‌
+        """Relay a transaction previously created with "do_not_relay":true.
 
         Args:
             hex (str): transaction metadata returned from a
@@ -669,8 +670,7 @@ class XcashWalletRpc(Helpers):
         return self.__xcash_wallet_post(method="store")
 
     def get_payments(self, payment_id: str) -> dict:
-        """Get a list of incoming payments using a given payment id.‌
-
+        """Get a list of incoming payments using a given payment id.
         Args:
             payment_id (str, optional): Payment ID used to find the payments (16 characters hex).. Defaults to None.
 
@@ -688,7 +688,7 @@ class XcashWalletRpc(Helpers):
         """Get a list of incoming payments using a given payment id, or a list of 
         payments ids, from a given height. This method is the preferred method over
          get_paymentsbecause it has the same functionality but is more extendable.
-          Either is fine for looking up transactions by a single payment ID.‌
+          Either is fine for looking up transactions by a single payment ID.
 
         Args:
             payment_ids (list): Payment IDs used to find the payments (16 characters hex).
@@ -720,7 +720,7 @@ class XcashWalletRpc(Helpers):
         return self.__xcash_wallet_post(method="incoming_transfers", params=params)
 
     def query_key(self, key_type: str) -> dict:
-        """Return the spend or view private key.‌
+        """Return the spend or view private key.
 
         Args:
             key_type (str): Which key to retrieve: 
@@ -734,7 +734,7 @@ class XcashWalletRpc(Helpers):
         return self.__xcash_wallet_post(method="query_key", params=params)
 
     def make_integrated_address(self, standard_address: str = None, payment_id: str = None) -> dict:
-        """Make an integrated address from the wallet address and a payment id.‌
+        """Make an integrated address from the wallet address and a payment id.
 
         Args:
             standard_address (str, optional):  Destination public address.. Defaults to primary address.
@@ -771,13 +771,12 @@ class XcashWalletRpc(Helpers):
     def rescan_blockchain(self):
         """Rescan the blockchain from scratch, losing any information which can 
         not be recovered from the blockchain itself. This includes destination addresses, 
-        tx secret keys, tx notes, etc.‌
+        tx secret keys, tx notes, etc.
         """
         return self.__xcash_wallet_post(method="rescan_blockchain")
 
     def set_tx_notes(self, tx_ids: list, notes: list):
-        """Set arbitrary string notes for transactions.‌
-
+        """Set arbitrary string notes for transactions.
         Args:
             tx_ids (list): list of strings of transaction ids
             notes (list): notes for the transactions as list
@@ -982,10 +981,11 @@ class XcashWalletRpc(Helpers):
             dict: out list, pending list, failed list, pool list
         """
 
-        allowed = ["in", "out",'pending',"failed","pool","filter_by_height","min_height","max_height","account_index","subaddr_indices"]
+        allowed = ["in", "out", 'pending', "failed", "pool", "filter_by_height", "min_height", "max_height",
+                   "account_index", "subaddr_indices"]
 
-        self.check_params(allowed_keys=allowed,params=kwargs )
-        params={}
+        self.check_params(allowed_keys=allowed, params=kwargs)
+        params = {}
         if kwargs:
             params.update(kwargs)
         return self.__xcash_wallet_post(method="get_transfers", params=params)
@@ -1003,7 +1003,7 @@ class XcashWalletRpc(Helpers):
         params = {"txid": tx_id, "account_index": account_idex}
         return self.__xcash_wallet_post(method="get_transfer_by_txid", params=params)
 
-    def sign(self, data: str)-> dict:
+    def sign(self, data: str) -> dict:
         """Sign a string.‌
 
         Args:
@@ -1085,8 +1085,8 @@ class XcashWalletRpc(Helpers):
 
         allowed = ["amount", "payment_id", "recipient_name", "tx_description"]
         self.check_params(allowed_keys=allowed, params=kwargs)
-    
-        params = {"address":address}
+
+        params = {"address": address}
         if kwargs:
             params.update(kwargs)
 
@@ -1142,7 +1142,7 @@ class XcashWalletRpc(Helpers):
         params = {"index": index}
         return self.__xcash_wallet_post(method="delete_address_book", params=params)
 
-    def refresh_wallet(self, start_height: int=None) -> dict:
+    def refresh_wallet(self, start_height: int = None) -> dict:
         """Refresh a wallet after openning.
 
         Args:
