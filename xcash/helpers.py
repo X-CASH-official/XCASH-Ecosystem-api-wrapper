@@ -97,6 +97,18 @@ class Helpers():
         return int(xcash_amount * (10 ** 6))
 
     def process_response(self, response):
+        """Process response
+
+        Args:
+            response (dict): response from the API call
+
+        Raises:
+            Exception: HTTP error
+            Exception: Connection Error
+
+        Returns:
+            dict: Data from the api call
+        """
         try:
             if response.status_code == 200:
                 return response.json()
