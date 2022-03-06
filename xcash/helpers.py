@@ -110,6 +110,7 @@ class Helpers():
             dict: Data from the api call
         """
         try:
+
             if response.status_code == 200:
                 return response.json()
             else:
@@ -132,9 +133,6 @@ class Helpers():
                                                   "Content-Type": "application/json"})
 
         return response
-
-    def post_response(self, rpc_url, rpc_input, headers):
-        return requests.post(rpc_url, data=json.dumps(rpc_input), headers=headers)
 
     def get_payment_id(self) -> str:
         """Create payment ID for wallet
