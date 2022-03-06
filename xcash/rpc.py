@@ -20,7 +20,7 @@ class XcashDaemonRpc(Helpers):
         else:
             self.rpc_url = "http://localhost:18281/json_rpc"
 
-    def __xcash_daemon_post(self, method: str, params: (dict, list) = None) -> dict:
+    def __xcash_daemon_post(self, method: str, params = None) -> dict:
         """Post to XCASH Daemon RPC
 
         Args:
