@@ -1131,7 +1131,7 @@ class XcashWalletRpc(Helpers):
         return self.__xcash_wallet_post(method="get_address_book", params=params)
 
     def delete_address_book(self, index: int) -> dict:
-        """Delete an entry from the address book.‌
+        """Delete an entry from the address book.
 
         Args:
             index (int): The index of the address book entry.
@@ -1143,7 +1143,7 @@ class XcashWalletRpc(Helpers):
         return self.__xcash_wallet_post(method="delete_address_book", params=params)
 
     def refresh_wallet(self, start_height: int=None) -> dict:
-        """Refresh a wallet after openning.‌
+        """Refresh a wallet after openning.
 
         Args:
             start_height (int): The block height from which to start refreshing.
@@ -1151,11 +1151,12 @@ class XcashWalletRpc(Helpers):
         Returns:
             dict: blocks_fetched, received_money
         """
+
         params = {"start_height": start_height}
         return self.__xcash_wallet_post(method="refresh", params=params)
 
     def rescan_spent(self) -> dict:
-        """Rescan the blockchain for spent outputs.‌
+        """Rescan the blockchain for spent outputs.
 
         Returns:
             dict: _description_
@@ -1273,7 +1274,7 @@ class XcashWalletRpc(Helpers):
         return self.__xcash_wallet_post(method="import_multisig_info", params=params)
 
     def finalize_multisig(self, multisig_info: list, password: str) -> dict:
-        """Turn this wallet into a multisig wallet, extra step for N-1/N wallets.‌
+        """Turn this wallet into a multisig wallet, extra step for N-1/N wallets.
 
         Args:
             multisig_info (list): List of multisig string from peers.
@@ -1286,7 +1287,7 @@ class XcashWalletRpc(Helpers):
         return self.__xcash_wallet_post(method="finalize_multisig", params=params)
 
     def sign_multisig(self, tx_data_hex: str) -> dict:
-        """Sign a transaction in multisig.‌
+        """Sign a transaction in multisig.
 
         Args:
             tx_data_hex (str): Multisig transaction in hex format, as returned by transfer under multisig_txset.
@@ -1298,7 +1299,7 @@ class XcashWalletRpc(Helpers):
         return self.__xcash_wallet_post(method="sign_multisig", params=params)
 
     def submit_multisig(self, tx_data_hex: str) -> dict:
-        """Submit a signed multisig transaction.‌
+        """Submit a signed multisig transaction.
 
         Args:
             tx_data_hex (str): Multisig transaction in hex format, as returned by sign_multisig under tx_data_hex.
