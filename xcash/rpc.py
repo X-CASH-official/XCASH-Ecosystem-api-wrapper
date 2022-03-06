@@ -1311,7 +1311,7 @@ class XcashWalletRpc(Helpers):
         return self.__xcash_wallet_post(method="submit_multisig", params=params)
 
     def get_version(self) -> dict:
-        """Get RPC version Major & Minor integer-format, where Major is the first 16 bits and Minor the last 16 bits.‌
+        """Get RPC version Major & Minor integer-format, where Major is the first 16 bits and Minor the last 16 bits.
 
         Returns:
             dict: RPC version, formatted with Major * 2^16 + Minor(Major encoded over the first 16 bits, 
