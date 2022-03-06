@@ -73,6 +73,29 @@ class Helpers():
         else:
             return delegate_url
 
+    def get_amount(self, atomic: int) -> float:
+        """Convert atomic units to human readable format. 
+
+        Args:
+            atomic (int): amount of XCASH express atomic units
+
+        Returns:
+            int: Human readable verzion of XCASH amount
+        """
+        return atomic / (10 ** 6)
+
+    def get_atomic(self, xcash_amount) -> int:
+        """Convert XCASH to atomic value
+
+        Args:
+            xcash_amount (float, int): Xcash amount
+
+        Returns:
+            int: xcash amount in atomic reprezentation
+        """
+
+        return int(xcash_amount * (10 ** 6))
+
     def process_response(self, response):
         try:
             if response.status_code == 200:
