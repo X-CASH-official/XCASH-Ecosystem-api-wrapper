@@ -60,6 +60,14 @@ class Helpers():
 
     @staticmethod
     def check_url(delegate_url):
+        """Check the delegate url
+
+        Args:
+            delegate_url (str): Provided url when initiating a class
+
+        Returns:
+            str: url
+        """
         if not delegate_url[-1] == "/":
             return f'{delegate_url}/'
         else:
