@@ -2,7 +2,7 @@ from xcash.helpers import Helpers
 
 
 class BlockchainExplorer(Helpers):
-    def __init__(self):
+    def __init__(self, base_api: str = "https://explorer.xcash.foundation/"):
         """
         Delegate constructor
 
@@ -10,7 +10,7 @@ class BlockchainExplorer(Helpers):
         """
         Helpers.__init__(self)
 
-        self.base_api = "https://explorer.xcash.foundation/"
+        self.base_api = base_api
         self.generates_supply = "getgeneratedsupply"
         self.circulating_supply = "getcirculatingsupply"
         self.blockchain_data = "getblockchaindata"
