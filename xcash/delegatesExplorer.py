@@ -81,3 +81,6 @@ class DelegatesExplorer(Helpers):
         response = self.get_response(url=self.base_url + self.round_statistics + self.param1 + f'{block_height}')
         return self.process_response(response)
 
+    #Setters
+    def set_base_url(self, base_url: str) -> None:
+        self.base_url = base_url
