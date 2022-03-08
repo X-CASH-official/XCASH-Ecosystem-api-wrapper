@@ -62,6 +62,37 @@ delegate_api = SharedDelegate(delegate_url="DELEGATE URL")
 
 ### RPC Daemon, Wallet and Dpops wallet (delegate)
 
+#### Pre-requirements
+
+In order to be able to execute calls to RPC you are required to first initiate RPC connection through cli wallet.
+
+To initiate RPC access wallet cd to the wallet folder **bin** where **xcash-wallet-rpc** is located, and open the
+location with either  **cmd** (Windows) or terminal (Ubuntu)
+
+Make connection with desired command:
+
+1. RPC connection with local daemon
+
+```shell
+# Windows
+xcash-wallet-rpc.exe --wallet-file <Wallet Name> --password <Wallet PSW> --rpc-bind-port 18285 --disable-rpc-login 
+
+#Ubuntu
+./xcash-wallet-rpc.exe --wallet-file <Wallet Name> --password <Wallet PSW> --rpc-bind-port 18285 --disable-rpc-login 
+```
+
+2. RPC connection with remote daemon
+
+```shell
+# Windows 
+xcash-wallet-rpc.exe --wallet-file <Wallet Name> --password <Wallet PSW> --rpc-bind-port 18285 --disable-rpc-login --confirm-external-bind --trusted-daemon --daemon-address <daemon_address>:18281
+
+# Ubuntu
+./xcash-wallet-rpc --wallet-file <Wallet Name> --password <Wallet PSW> --rpc-bind-port 18285 --disable-rpc-login --confirm-external-bind --trusted-daemon --daemon-address <daemon_address>:18281
+```
+
+#### Import desired packages to python script
+
 ```python
 # Access endpoints for XCASH Daemon
 from xcash.rpc import XcashDaemonRpc
@@ -153,6 +184,9 @@ version = daemon.get_version()
 pprint(version)
 ```
 
+Examples on all available methods to communicate with Daemon RPC API can be
+found [here](https://github.com/X-CASH-official/XCASH-Ecosystem-api-wrapper/blob/main/examples/rpc_daemon_examples.py)
+
 ### Wallet RPC call
 
 ````python
@@ -166,6 +200,9 @@ balance = wallet.get_balance()
 pprint(balance)
 ````
 
+Examples on all available methods to communicate with Wallet RPC API can be
+found [here](https://github.com/X-CASH-official/XCASH-Ecosystem-api-wrapper/blob/main/examples/rpc_wallet_examples.py)
+
 ### DPOPS Wallet RPC call
 
 ```python
@@ -176,6 +213,10 @@ dpops_wallet = XcashDpopsWalletRpc()
 status = dpops_wallet.register_delegate(delegate_name="Animus-Test", delegate_ip_address="100.100.00.00")
 pprint(status)
 ```
+
+Examples on all available methods to communicate with DPOPS wallet RPC API can be
+found [here](https://github.com/X-CASH-official/XCASH-Ecosystem-api-wrapper/blob/main/examples/rpc_wallet_examples.py)
+
 
 
 
