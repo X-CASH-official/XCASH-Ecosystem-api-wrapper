@@ -4,21 +4,16 @@ from xcash.helpers import Helpers
 
 
 class XcashDaemonRpc(Helpers):
-    def __init__(self, rpc_url: str = None):
-        """XCASH Daemon RPC Class
+    def __init__(self, rpc_url: str = "http://localhost:18281/json_rpc"):
+        """Xcash Daemon RPC simple wrapper
 
         Args:
-            rpc_url (str, optional): daemon address. Defaults to http://localhost:18281/json_rpc.
+            rpc_url (str, optional): Rpc url wallet. Defaults to "http://localhost:18281/json_rpc".
         """
 
+        self.rpc_url = rpc_url
         super().__init__()
         self.headers = {'Content-Type': 'application/json'}
-
-        if rpc_url:
-            self.rpc_url = rpc_url
-
-        else:
-            self.rpc_url = "http://localhost:18281/json_rpc"
 
     def __xcash_daemon_post(self, method: str, params=None) -> dict:
         """Post to XCASH Daemon RPC
@@ -288,19 +283,16 @@ class XcashDaemonRpc(Helpers):
 
 
 class XcashWalletRpc(Helpers):
-    def __init__(self, wallet_rpc_url=None):
-        """Xcash Wallet Rpc Class.
+    def __init__(self, wallet_rpc_url: str = "http://localhost:18285/json_rpc"):
+        """Xcash wallet rpc wrapper.
 
         Args:
-            wallet_rpc_url (str, optional): Custom rpc url otherwise. Defaults to "http://localhost:18285/json_rpc".
+            wallet_rpc_url (str, optional): Rpc address. Defaults to "http://localhost:18285/json_rpc".
         """
+        self.rpc_url = wallet_rpc_url
+
         super().__init__()
         self.headers = {'Content-Type': 'application/json'}
-
-        if wallet_rpc_url:
-            self.rpc_url = wallet_rpc_url
-        else:
-            self.rpc_url = "http://localhost:18285/json_rpc"
 
     def __xcash_wallet_post(self, method: str, params=None) -> dict:
         """Post to XCASH Wallet RPC
@@ -343,7 +335,7 @@ class XcashWalletRpc(Helpers):
         return self.__xcash_wallet_post(method="get_balance", params=params)
 
     def get_address(self, account_index: int = 0, address_index: list = None) -> dict:
-        """Return the wallet's addresses for an account. Optionally filter for specific set of subaddresses.‌
+        """Return the wallet's addresses for an account. Optionally filter for specific set of subaddresses.
 
         Args:
             account_index (int): Return subaddresses for this account.
@@ -417,7 +409,7 @@ class XcashWalletRpc(Helpers):
         return self.__xcash_wallet_post(method="get_accounts", params=params)
 
     def create_account(self, label: str = None) -> dict:
-        """Create a new account with an optional label.‌
+        """Create a new account with an optional label.
 
         Args:
             label (str, optional):  Label for the account.. Defaults to None.
@@ -468,7 +460,7 @@ class XcashWalletRpc(Helpers):
             raise TypeError("Values in accounts list are allowed to be integers only.")
 
     def untag_accounts(self, accounts: list) -> dict:
-        """Remove filtering tag from a list of accounts.‌
+        """Remove filtering tag from a list of accounts.
 
         Args:
 
@@ -568,7 +560,7 @@ class XcashWalletRpc(Helpers):
         return self.__xcash_wallet_post(method="transfer_split", params=params)
 
     def sign_transfer(self, unsigned_txset: str, export_raw: bool = False) -> dict:
-        """Sign a transaction created on a read-only wallet (in cold-signing process)‌
+        """Sign a transaction created on a read-only wallet (in cold-signing process)
 
         Args:
             unsigned_txset (str): Set of unsigned tx returned by "transfer" or "transfer_split" methods.
@@ -584,7 +576,7 @@ class XcashWalletRpc(Helpers):
         return self.__xcash_wallet_post(method="sign_transfer", params=params)
 
     def submit_transfer(self, tx_data_hex: str) -> dict:
-        """Submit a previously signed transaction on a read-only wallet (in cold-signing process).‌
+        """Submit a previously signed transaction on a read-only wallet (in cold-signing process).
 
         Args:
             tx_data_hex (str): Set of signed tx returned by "sign_transfer"
@@ -597,7 +589,7 @@ class XcashWalletRpc(Helpers):
         return self.__xcash_wallet_post(method="submint_transfer", params=params)
 
     def sweep_dust(self, **kwargs) -> dict:
-        """Send all dust outputs back to the wallet's, to make them easier to spend (and mix).‌
+        """Send all dust outputs back to the wallet's, to make them easier to spend (and mix).
 
         Kwargs:
             get_tx_keys (bool): Return the transaction keys after sending.
@@ -613,7 +605,7 @@ class XcashWalletRpc(Helpers):
         return self.__xcash_wallet_post(method="submint_transfer", params=kwargs)
 
     def sweep_all(self, address: str, account_index: int = 0, mixin: int = 20, **kwargs) -> dict:
-        """Send all unlocked balance to an address.‌
+        """Send all unlocked balance to an address.
 
         Args:
             address (str): Valid X-CASH address
@@ -757,7 +749,7 @@ class XcashWalletRpc(Helpers):
         return self.__xcash_wallet_post(method="make_integrated_address", params=params)
 
     def split_integrated_address(self, integrated_address: str) -> dict:
-        """Retrieve the standard address and payment id corresponding to an integrated address.‌
+        """Retrieve the standard address and payment id corresponding to an integrated address.
 
         Args:
             integrated_address (str): string
@@ -793,7 +785,7 @@ class XcashWalletRpc(Helpers):
         return self.__xcash_wallet_post(method="set_tx_notes", params=params)
 
     def get_tx_notes(self, tx_ids: list) -> dict:
-        """Get string notes for transactions.‌
+        """Get string notes for transactions.
 
         Args:
             tx_ids (list): transaction ids
@@ -833,7 +825,7 @@ class XcashWalletRpc(Helpers):
         return self.__xcash_wallet_post(method="get_attribute", params=params)
 
     def get_tx_key(self, tx_id: str) -> dict:
-        """Get transaction secret key from transaction id.‌
+        """Get transaction secret key from transaction id.
 
         Args:
             tx_id (str): transaction id.
@@ -846,7 +838,7 @@ class XcashWalletRpc(Helpers):
         return self.__xcash_wallet_post(method="get_tx_key", params=params)
 
     def check_tx_key(self, tx_id: str, tx_key: str, address: str) -> dict:
-        """Check a transaction in the blockchain with its secret key.‌
+        """Check a transaction in the blockchain with its secret key.
 
         Args:
             tx_id (str):  transaction id.
@@ -860,7 +852,7 @@ class XcashWalletRpc(Helpers):
         return self.__xcash_wallet_post(method="check_tx_key", params=params)
 
     def get_tx_proof(self, tx_id: str, address: str, message: str = None) -> dict:
-        """Get transaction signature to prove it.‌
+        """Get transaction signature to prove it.
 
         Args:
             tx_id (str): transaction id.
@@ -879,7 +871,7 @@ class XcashWalletRpc(Helpers):
         return self.__xcash_wallet_post(method="get_tx_proof", params=params)
 
     def check_tx_proof(self, tx_id: str, address: str, signature: str, message: str = None) -> dict:
-        """Prove a transaction by checking its signature.‌
+        """Prove a transaction by checking its signature.
 
         Args:
             tx_id (str): transaction id.
@@ -898,7 +890,7 @@ class XcashWalletRpc(Helpers):
 
     def get_spend_proof(self, tx_id: str, message: str = None) -> dict:
         """Generate a signature to prove a spend. Unlike proving a transaction, 
-            it does not requires the destination public address.‌
+            it does not requires the destination public address.
 
         Args:
             tx_id (str):  transaction id.
@@ -915,7 +907,7 @@ class XcashWalletRpc(Helpers):
 
     def check_spend_proof(self, tx_id: str, signature: str, message: str = None) -> dict:
         """Prove a spend using a signature. Unlike proving a transaction, it does not requires 
-        the destination public address.‌
+        the destination public address.
 
         Args:
             tx_id (str): transaction id.
@@ -931,8 +923,9 @@ class XcashWalletRpc(Helpers):
             params.update({"message": message})
         return self.__xcash_wallet_post(method="check_spend_proof", params=params)
 
-    def get_reserve_proof(self, account_index: int, amount: int, all: bool = True, message: str = None) -> dict:
-        """Generate a signature to prove of an available amount in a wallet.‌
+    def get_reserve_proof(self, account_index: int = None, amount: int = None, all: bool = True,
+                          message: str = None) -> dict:
+        """Generate a signature to prove of an available amount in a wallet.
 
 
         Args:
@@ -952,7 +945,7 @@ class XcashWalletRpc(Helpers):
         return self.__xcash_wallet_post(method="get_reserve_proof", params=params)
 
     def check_reserve_proof(self, address: str, signature: str, message: str = None) -> dict:
-        """Proves a wallet has a disposable reserve using a signature.‌
+        """Proves a wallet has a disposable reserve using a signature.
 
 
         Args:
@@ -971,7 +964,7 @@ class XcashWalletRpc(Helpers):
         return self.__xcash_wallet_post(method="check_reserve_proof", params=params)
 
     def get_transfers(self, **kwargs) -> dict:
-        """Returns a list of transfers.‌
+        """Returns a list of transfers.
 
         Kwargs: 
             in (bool, optional): Include incoming
@@ -998,21 +991,21 @@ class XcashWalletRpc(Helpers):
             params.update(kwargs)
         return self.__xcash_wallet_post(method="get_transfers", params=params)
 
-    def get_tranfers_by_txid(self, tx_id: str, account_idex: int = 0) -> dict:
-        """Show information about a transfer to/from this address.‌
+    def get_transfers_by_txid(self, tx_id: str, account_index: int = 0) -> dict:
+        """Show information about a transfer to/from this address.
 
         Args:
             tx_id (str): Transaction ID used to find the transfer.
-            account_idex (int, optional): Index of the account to query for the transfer Defaults to 0.
+            account_index (int, optional): Index of the account to query for the transfer Defaults to 0.
 
         Returns:
             dict: transfer 
         """
-        params = {"txid": tx_id, "account_index": account_idex}
+        params = {"txid": tx_id, "account_index": account_index}
         return self.__xcash_wallet_post(method="get_transfer_by_txid", params=params)
 
     def sign(self, data: str) -> dict:
-        """Sign a string.‌
+        """Sign a string.
 
         Args:
             data (str): Anything you need to sign.
@@ -1023,7 +1016,7 @@ class XcashWalletRpc(Helpers):
         return self.__xcash_wallet_post(method="sign", params=params)
 
     def verify(self, data: str, address: str, signature: str) -> dict:
-        """Verify a signature on a string.‌
+        """Verify a signature on a string.
 
         Args:
             data (str): What should have been signed.
@@ -1038,7 +1031,7 @@ class XcashWalletRpc(Helpers):
         return self.__xcash_wallet_post(method="verify", params=params)
 
     def export_outputs(self) -> dict:
-        """Export all outputs in hex format.‌
+        """Export all outputs in hex format.
 
         Returns:
             dict: outputs_data_hex
@@ -1046,7 +1039,7 @@ class XcashWalletRpc(Helpers):
         return self.__xcash_wallet_post(method="export_outputs")
 
     def import_outputs(self, outputs_data_hex: str) -> dict:
-        """Import outputs in hex format.‌
+        """Import outputs in hex format.
 
         Args:
             outputs_data_hex (str): num_imported; number of outputs imported.
@@ -1057,7 +1050,7 @@ class XcashWalletRpc(Helpers):
         return self.__xcash_wallet_post(method="import_outputs")
 
     def export_key_images(self) -> dict:
-        """Export a signed set of key images.‌
+        """Export a signed set of key images.
 
         Returns:
             dict: signed_key_images 
@@ -1065,7 +1058,7 @@ class XcashWalletRpc(Helpers):
         return self.__xcash_wallet_post(method="export_key_images")
 
     def import_key_images(self, signed_key_images: list) -> dict:
-        """Import signed key images list and verify their spent status.‌
+        """Import signed key images list and verify their spent status.
 
         Args:
             signed_key_images (list): of  key_image, signature dict like structure
@@ -1077,7 +1070,7 @@ class XcashWalletRpc(Helpers):
         return self.__xcash_wallet_post(method="import_key_images", params=params)
 
     def make_uri(self, address: str, **kwargs) -> dict:
-        """Create a payment URI using the official URI spec.‌
+        """Create a payment URI using the official URI spec.
 
         Args:
             address (str): Wallet address
@@ -1101,7 +1094,7 @@ class XcashWalletRpc(Helpers):
         return self.__xcash_wallet_post(method="make_uri", params=params)
 
     def parse_uri(self, uri: str) -> dict:
-        """Parse a payment URI to get payment information.‌
+        """Parse a payment URI to get payment information.
 
         Args:
             uri (str): This contains all the payment input information as a properly formatted payment URI
@@ -1109,12 +1102,11 @@ class XcashWalletRpc(Helpers):
         Returns:
             dict: uri
         """
-
-        return self.__xcash_wallet_post(method="parse_uri")
+        params = {"uri": uri}
+        return self.__xcash_wallet_post(method="parse_uri", params=params)
 
     def get_address_book(self, entries: list) -> dict:
-        """Retrieves entries from the address book.‌
-
+        """Retrieves entries from the address book.
         Args:
             entries (list):  array of unsigned int; indices of the requested address book entries
 
@@ -1124,13 +1116,13 @@ class XcashWalletRpc(Helpers):
         params = {"entries": entries}
         return self.__xcash_wallet_post(method="get_address_book", params=params)
 
-    def add_address_book(self, address: str, payment_id: str = None, description: str = "") -> dict:
-        """Add an entry to the address book.‌
+    def add_address_book(self, address: str, payment_id: str = None, description: str = None) -> dict:
+        """Add an entry to the address book.
 
         Args:
             address (str): XCASH valid address
             payment_id (str, optional): Payment ID. Defaults to None.
-            description (str, optional): _description_. Defaults to "".
+            description (str, optional): Description . Defaults to None.
 
         Returns:
             dict: The index of the address book entry as INT
@@ -1172,7 +1164,7 @@ class XcashWalletRpc(Helpers):
         return self.__xcash_wallet_post(method="rescan_spent")
 
     def get_languages(self) -> dict:
-        """Rescan the blockchain for spent outputs.‌
+        """Rescan the blockchain for spent outputs.
 
         Returns:
             dict: languages
@@ -1181,7 +1173,7 @@ class XcashWalletRpc(Helpers):
 
     def create_wallet(self, filename: str, password: str, language: str) -> dict:
         """Create a new wallet. You need to have set the argument "–wallet-dir" 
-        when launching xcash-wallet-rpc to make this work.‌
+        when launching xcash-wallet-rpc to make this work.
 
         Args:
             filename (str): Wallet file name.
@@ -1196,7 +1188,7 @@ class XcashWalletRpc(Helpers):
 
     def open_wallet(self, filename: str, password: str) -> dict:
         """Open a wallet. You need to have set the argument "–wallet-dir" 
-        when launching xcash-wallet-rpc to make this work.‌
+        when launching xcash-wallet-rpc to make this work.
 
         Args:
             filename (str): wallet name stored in –wallet-dir.
@@ -1210,15 +1202,14 @@ class XcashWalletRpc(Helpers):
         return self.__xcash_wallet_post(method="open_wallet", params=paramas)
 
     def close_wallet(self) -> dict:
-        """Close the currently opened wallet, after trying to save it.‌
-
+        """Close the currently opened wallet, after trying to save it.
         Returns:
             dict: None
         """
         return self.__xcash_wallet_post(method="close_wallet")
 
     def change_wallet_password(self, old_password: str, new_password: str) -> dict:
-        """Change a wallet password.‌
+        """Change a wallet password.
 
         Args:
             old_password (str): Current wallet password, if defined.
@@ -1231,7 +1222,7 @@ class XcashWalletRpc(Helpers):
         return self.__xcash_wallet_post(method="change_wallet_password", params=params)
 
     def is_multisig(self) -> dict:
-        """Check if a wallet is a multisig one.‌
+        """Check if a wallet is a multisig one.
 
         Returns:
             dict: multisig, ready, threshold, total
@@ -1239,7 +1230,7 @@ class XcashWalletRpc(Helpers):
         return self.__xcash_wallet_post(method="is_multisig")
 
     def prepare_multisig(self) -> dict:
-        """Prepare a wallet for multisig by generating a multisig string to share with peers.‌
+        """Prepare a wallet for multisig by generating a multisig string to share with peers.
 
         Returns:
             dict: Multisig string to share with peers to create the multisig wallet.
@@ -1247,7 +1238,7 @@ class XcashWalletRpc(Helpers):
         return self.__xcash_wallet_post(method="prepare_multisig")
 
     def make_multisig(self, multisig_info: list, threshold: int, password: str) -> dict:
-        """Make a wallet multisig by importing peers multisig string.‌
+        """Make a wallet multisig by importing peers multisig string.
 
         Args:
             multisig_info (list): array of string; List of multisig string from peers.
@@ -1262,7 +1253,7 @@ class XcashWalletRpc(Helpers):
         return self.__xcash_wallet_post(method="make_multisig", params=params)
 
     def export_multisig_info(self) -> dict:
-        """Export multisig info for other participants.‌
+        """Export multisig info for other participants.
 
         Returns:
             dict: info
@@ -1270,7 +1261,7 @@ class XcashWalletRpc(Helpers):
         return self.__xcash_wallet_post(method="export_multisig_info")
 
     def import_multisig_info(self, info: list) -> dict:
-        """Import multisig info from other participants.‌
+        """Import multisig info from other participants.
 
         Args:
             info (list): List of multisig info in hex format from other participants.
@@ -1329,15 +1320,11 @@ class XcashWalletRpc(Helpers):
 
 
 class XcashDpopsWalletRpc(Helpers):
-    def __init__(self, rpc_url: str = None):
+    def __init__(self, rpc_url: str = "http://localhost:18285/json_rpc"):
+
         super().__init__()
         self.headers = {'Content-Type': 'application/json'}
-
-        if rpc_url:
-            self.rpc_url = rpc_url
-
-        else:
-            self.rpc_url = "http://localhost:18285/json_rpc"
+        self_rpc_url = rpc_url
 
     def vote(self, delegate: str) -> dict:
         """Place your vote for a delegate
@@ -1349,7 +1336,7 @@ class XcashDpopsWalletRpc(Helpers):
             dict: tatus of the vote call.
         """
         params = {"delegate_data": delegate}
-        data = self.__xcash_daemon_post(method="vote", params=params)
+        data = self.__xcash(method="vote", params=params)
         return data
 
     def register_delegate(self, delegate_name: str, delegate_ip_address: str) -> dict:
