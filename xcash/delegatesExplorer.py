@@ -3,9 +3,9 @@ from pprint import pprint
 
 
 class DelegatesExplorer(Helpers):
-    def __init__(self):
+    def __init__(self, base_url: str = "http://delegates.xcash.foundation/"):
         super().__init__()
-        self.base_url = "http://delegates.xcash.foundation/"
+        self.base_url = base_url
         self.delegates_website_get_statistics = "delegateswebsitegetstatistics"
         self.get_delegates = "getdelegates"
         self.delegate_stats = "getdelegatesstatistics"
@@ -81,3 +81,11 @@ class DelegatesExplorer(Helpers):
         response = self.get_response(url=self.base_url + self.round_statistics + self.param1 + f'{block_height}')
         return self.process_response(response)
 
+    #Setters
+    def set_base_url(self, base_url: str) -> None:
+        """Set base url 
+
+        Args:
+            base_url (str): New base url
+        """
+        self.base_url = base_url

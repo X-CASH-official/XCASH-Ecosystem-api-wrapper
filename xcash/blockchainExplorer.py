@@ -2,7 +2,7 @@ from xcash.helpers import Helpers
 
 
 class BlockchainExplorer(Helpers):
-    def __init__(self):
+    def __init__(self, base_api: str = "https://explorer.xcash.foundation/"):
         """
         Delegate constructor
 
@@ -10,7 +10,7 @@ class BlockchainExplorer(Helpers):
         """
         Helpers.__init__(self)
 
-        self.base_api = "https://explorer.xcash.foundation/"
+        self.base_api = base_api
         self.generates_supply = "getgeneratedsupply"
         self.circulating_supply = "getcirculatingsupply"
         self.blockchain_data = "getblockchaindata"
@@ -112,7 +112,7 @@ class BlockchainExplorer(Helpers):
             url=self.base_api + self.verify_reserve_proof + self.public_address + f'{public_address}' + self.reserve_proof + f"{reserve_proof}" + self.data + f"{data}")
         return self.process_response(response)
 
-    def generate_integrated_address(self, public_address: str, payment_id: str = None)-> dict:
+    def generate_integrated_address(self, public_address: str, payment_id: str = None) -> dict:
         """Create integrated address for public address.
 
         Args:
@@ -125,3 +125,12 @@ class BlockchainExplorer(Helpers):
         response = self.get_response(
             url=self.base_api + self.integrated_address + self.public_address + f'{public_address}' + self.payment_id + f'{payment_id}')
         return self.process_response(response)
+
+    # Setters 
+    def set_base_api(self, base_api: str) -> None:
+        """Set base api 
+
+        Args:
+            base_api (str): New base api
+        """
+        self.base_api = base_api
