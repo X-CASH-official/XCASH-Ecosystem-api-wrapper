@@ -60,18 +60,18 @@ from xcash.sharedDelegate import SharedDelegate
 delegate_api = SharedDelegate(delegate_url="DELEGATE URL")
 ```
 
-### RPC Daemon, Wallet and Dpops wallet (delegate)
+### RPC server Daemon, Wallet and Dpops wallet (delegate)
 
-#### Pre-requirements
+#### Pre-requirements -> Start the RPC server!
 
-In order to be able to execute calls to RPC you are required to first initiate RPC connection through cli wallet.
+In order to be able to execute calls to RPC you are required to first initiate RPC server.
 
-To initiate RPC access wallet cd to the wallet folder **bin** where **xcash-wallet-rpc** is located, and open the
+Cd to the wallet folder **bin** where **xcash-wallet-rpc** is located, and open the
 location with either  **cmd** (Windows) or terminal (Ubuntu)
 
-Make connection with desired command:
+Initiate PRC server either with:
 
-1. RPC connection with local daemon
+1. Local daemon
 
 ```shell
 # Windows
@@ -81,7 +81,7 @@ xcash-wallet-rpc.exe --wallet-file <Wallet Name> --password <Wallet PSW> --rpc-b
 ./xcash-wallet-rpc.exe --wallet-file <Wallet Name> --password <Wallet PSW> --rpc-bind-port 18285 --disable-rpc-login 
 ```
 
-2. RPC connection with remote daemon
+2. Remote daemon
 
 ```shell
 # Windows 
