@@ -66,8 +66,8 @@ delegate_api = SharedDelegate(delegate_url="DELEGATE URL")
 
 In order to be able to execute calls to RPC you are required to first initiate RPC server.
 
-Cd to the wallet folder **bin** where **xcash-wallet-rpc** is located, and open the
-location with either  **cmd** (Windows) or terminal (Ubuntu)
+Cd to the wallet folder **bin** where **xcash-wallet-rpc** is located, and open the location with either  **cmd** (
+Windows) or terminal (Ubuntu)
 
 Initiate PRC server either with:
 
@@ -75,20 +75,20 @@ Initiate PRC server either with:
 
 ```shell
 # Windows
-xcash-wallet-rpc.exe --wallet-file <Wallet Name> --password <Wallet PSW> --rpc-bind-port 18285 --disable-rpc-login 
+xcash-wallet-rpc.exe --wallet-file <Wallet Name> --password <Wallet PSW> --rpc-bind-port 18285 --disable-rpc-login --confirm-external-bind --trusted-daemon
 
 #Ubuntu
-./xcash-wallet-rpc.exe --wallet-file <Wallet Name> --password <Wallet PSW> --rpc-bind-port 18285 --disable-rpc-login 
+./xcash-wallet-rpc --wallet-file <Wallet Name> --password <Wallet PSW> --rpc-bind-port 18285 --disable-rpc-login --confirm-external-bind --trusted-daemon
 ```
 
 2. Remote daemon
 
 ```shell
 # Windows 
-xcash-wallet-rpc.exe --wallet-file <Wallet Name> --password <Wallet PSW> --rpc-bind-port 18285 --disable-rpc-login --confirm-external-bind --trusted-daemon --daemon-address <daemon_address>:18281
+xcash-wallet-rpc.exe --wallet-file <Wallet Name> --password <Wallet PSW> --rpc-bind-port 18285 --disable-rpc-login --confirm-external-bind --daemon-address <daemon_address>:18281
 
 # Ubuntu
-./xcash-wallet-rpc --wallet-file <Wallet Name> --password <Wallet PSW> --rpc-bind-port 18285 --disable-rpc-login --confirm-external-bind --trusted-daemon --daemon-address <daemon_address>:18281
+./xcash-wallet-rpc --wallet-file <Wallet Name> --password <Wallet PSW> --rpc-bind-port 18285 --disable-rpc-login --confirm-external-bind  --daemon-address <daemon_address>:18281
 ```
 
 #### Import desired packages to python script
@@ -217,8 +217,8 @@ pprint(status)
 Examples on all available methods to communicate with DPOPS wallet RPC API can be
 found [here](https://github.com/X-CASH-official/XCASH-Ecosystem-api-wrapper/blob/main/examples/rpc_wallet_examples.py)
 
-
 ## Contributors
+
 <a href="https://github.com/X-CASH-official/XCASH-Ecosystem-api-wrapper/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=X-CASH-official/XCASH-Ecosystem-api-wrapper" />
 </a>
