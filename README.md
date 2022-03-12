@@ -217,6 +217,11 @@ pprint(status)
 Examples on all available methods to communicate with DPOPS wallet RPC API can be
 found [here](https://github.com/X-CASH-official/XCASH-Ecosystem-api-wrapper/blob/main/examples/rpc_wallet_examples.py)
 
+## References
+ * https://docs.xcash.foundation/applications/rpc-calls/json-rpc-methods
+ * https://docs.xcash.foundation/applications/rpc-calls/xcash-wallet-rpc
+ * https://docs.xcash.foundation/applications/rpc-calls/xcash-wallet-rpc/dpops-wallet-rpc-calls
+
 ## Contributors
 
 <a href="https://github.com/X-CASH-official/XCASH-Ecosystem-api-wrapper/graphs/contributors">
