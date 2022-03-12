@@ -3,7 +3,10 @@ from pprint import pprint
 
 rpc_url = None  # If none a http://localhost:18281/json_rpc will be used
 
-daemon_rpc = XcashDaemonRpc(rpc_url=rpc_url)
+daemon_rpc = XcashDaemonRpc()
+
+if rpc_url:
+       daemon_rpc = XcashDaemonRpc(rpc_url=rpc_url)
 
 # Get block count
 count = daemon_rpc.get_block_count()
