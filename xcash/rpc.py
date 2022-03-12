@@ -25,7 +25,7 @@ class XcashDaemonRpc(Helpers):
         Returns:
             dict: result from api call
         """
-        if not params:
+        if params:
             rpc_data = json.dumps({"jsonrpc": "2.0", "id": "0",
                                    "method": method, "params": params})
 
