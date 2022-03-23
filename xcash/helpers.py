@@ -3,6 +3,7 @@ import binascii
 import json
 import os
 import requests
+from re import match
 
 
 class XcashException(Exception):
@@ -198,3 +199,10 @@ class Helpers():
                 required = ' & '.join(allowed)
                 raise MissingRequiredParama(f"One of the required params is missing. Required are {required}")
         return new_transfers
+
+    def validate_address(self, address: str) -> bool:
+        """Xcash address to verify
+        Args:
+            address (str): Public address to be verified for length and
+        """
+        return match(r'^XCA[A-Za-z0-9]{95}$|^XCB[A-Za-z0-9]{107}', address) is not None
