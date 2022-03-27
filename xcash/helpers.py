@@ -85,6 +85,9 @@ class Helpers():
         """
         return atomic / (10 ** 6)
 
+    def get_wxcsah_amount(self, atomic: int) -> float:
+        return atomic / (10 ** 18)
+
     def get_atomic(self, xcash_amount) -> int:
         """Convert XCASH to atomic value
 
