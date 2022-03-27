@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name="xcash",
-    version="0.1.0",
+    version="0.2.0",
     packages=find_packages(),
     description="XCASH Foundation ecosystem API wrapper",
     long_description=long_description,
