@@ -1,14 +1,13 @@
-from xcash.helpers import Helpers
+from .helpers import get_response, process_response
 
 
-class BlockchainExplorer(Helpers):
+class BlockchainExplorer:
     def __init__(self, base_api: str = "https://explorer.xcash.foundation/"):
         """
         Delegate constructor
 
         :delegate_url: Address of the delegate
         """
-        Helpers.__init__(self)
 
         self.base_api = base_api
         self.generates_supply = "getgeneratedsupply"
@@ -33,8 +32,8 @@ class BlockchainExplorer(Helpers):
         Returns:
             dict: blockchain data
         """
-        response = self.get_response(url=self.base_api + self.blockchain_data)
-        return self.process_response(response)
+        response = get_response(url=self.base_api + self.blockchain_data)
+        return process_response(response)
 
     def get_circulating_supply(self) -> int:
         """Get current XCASH circulating supply
@@ -42,8 +41,8 @@ class BlockchainExplorer(Helpers):
         Returns:
             int: circulating supply amount
         """
-        response = self.get_response(url=self.base_api + self.circulating_supply)
-        return self.process_response(response)
+        response = get_response(url=self.base_api + self.circulating_supply)
+        return process_response(response)
 
     def get_current_block_height(self) -> dict:
         """Get current block height of the XCASH chain 
@@ -51,8 +50,8 @@ class BlockchainExplorer(Helpers):
         Returns:
             dict: block height count/number
         """
-        response = self.get_response(url=self.base_api + self.block_height)
-        return self.process_response(response)
+        response = get_response(url=self.base_api + self.block_height)
+        return process_response(response)
 
     def get_generated_supply(self) -> int:
         """Get generated supply
@@ -60,8 +59,8 @@ class BlockchainExplorer(Helpers):
         Returns:
             int: Total generated supply amount
         """
-        response = self.get_response(url=self.base_api + self.generates_supply)
-        return self.process_response(response)
+        response = get_response(url=self.base_api + self.generates_supply)
+        return process_response(response)
 
     def get_last_block_data(self) -> dict:
         """Get last block details
@@ -69,8 +68,8 @@ class BlockchainExplorer(Helpers):
         Returns:
             dict: details on the last block
         """
-        response = self.get_response(url=self.base_api + self.last_block_data)
-        return self.process_response(response)
+        response = get_response(url=self.base_api + self.last_block_data)
+        return process_response(response)
 
     def get_block_data(self, block_data) -> dict:
         """Get block data based on provided argument.
@@ -81,8 +80,8 @@ class BlockchainExplorer(Helpers):
         Returns:
             dict: block details 
         """
-        response = self.get_response(url=self.base_api + self.last_block_data + self.block_data + f'{block_data}')
-        return self.process_response(response)
+        response = get_response(url=self.base_api + self.last_block_data + self.block_data + f'{block_data}')
+        return process_response(response)
 
     def get_transaction_data(self, tx_hash: str) -> dict:
         """Get the transaction data based on specified transaction hash
@@ -94,8 +93,8 @@ class BlockchainExplorer(Helpers):
             dict: data on transaction
         """
 
-        response = self.get_response(url=self.base_api + self.transaction_data + self.hash_data + f'{tx_hash}')
-        return self.process_response(response)
+        response = get_response(url=self.base_api + self.transaction_data + self.hash_data + f'{tx_hash}')
+        return process_response(response)
 
     def get_reserve_proof_verification(self, public_address: str, reserve_proof: str, data: str = None) -> dict:
         """Verify reserver proof based on provided arguments
@@ -108,9 +107,9 @@ class BlockchainExplorer(Helpers):
         Returns:
             dict: Three different types of results in regards to reserve proof verification
         """
-        response = self.get_response(
+        response = get_response(
             url=self.base_api + self.verify_reserve_proof + self.public_address + f'{public_address}' + self.reserve_proof + f"{reserve_proof}" + self.data + f"{data}")
-        return self.process_response(response)
+        return process_response(response)
 
     def generate_integrated_address(self, public_address: str, payment_id: str = None) -> dict:
         """Create integrated address for public address.
@@ -122,9 +121,9 @@ class BlockchainExplorer(Helpers):
         Returns:
             dict: details on integrated address
         """
-        response = self.get_response(
+        response = get_response(
             url=self.base_api + self.integrated_address + self.public_address + f'{public_address}' + self.payment_id + f'{payment_id}')
-        return self.process_response(response)
+        return process_response(response)
 
     # Setters 
     def set_base_api(self, base_api: str) -> None:
